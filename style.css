@@ -66,4 +66,15 @@ img {
 }
 .gallery img{
   height: 200px;
+  width: 400px;
+}
+.top-banner{
+  margin-top: 100px;
+}
+nav{
+  background-color:whitesmoke;
+  font-weight: 700;
+}
+nav li:hover{
+  background-color: mintcream;
 }
