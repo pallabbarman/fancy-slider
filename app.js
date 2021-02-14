@@ -79,21 +79,14 @@ const createSlider = () => {
     item.innerHTML = `<img class="w-100"
     src="${slide}"
     alt="">`;
-    sliderContainer.appendChild(item)
+    sliderContainer.appendChild(item);
+    document.getElementById('duration').value = "";
   })
   changeSlide(0)
-  if (duration >= 1000) {
-    timer = setInterval(function () {
-      slideIndex++;
-      changeSlide(slideIndex);
-    }, duration);
-  }
-  else {
-    timer = setInterval(function () {
-      slideIndex++;
-      changeSlide(slideIndex);
-    }, 1000);
-  }
+  timer = setInterval(function () {
+    slideIndex++;
+    changeSlide(slideIndex);
+  }, duration);
 }
 
 // change slider index 
@@ -126,27 +119,36 @@ searchBtn.addEventListener('click', function () {
   document.querySelector('.main').style.display = 'none';
   clearInterval(timer);
   const search = document.getElementById('search').value;
+  document.getElementById('element').innerText = search;
   if (!search) {
     alert("Please search anything!");
   } else {
-    getImages(search)
-  sliders.length = 0;
+    getImages(search);
+    sliders.length = 0;
   }
-  document.getElementById('search').value="";
 })
 
-// enter key in search box 
-document.getElementById("search").addEventListener("keypress", function (event) {
-  if (event.key == 'Enter') {
-    document.getElementById("search-btn").click();
-  }
-});
+// enter key for search box and slider images
+const enterKey = (input, button) => {
+  document.getElementById(input).addEventListener("keypress", function (event) {
+    if (event.key === 'Enter')
+      document.getElementById(button).click();
+  });
+}
+enterKey('search', 'search-btn');
+enterKey('duration', 'create-slider');
 
 sliderBtn.addEventListener('click', function () {
-  createSlider()
+  const duration = document.getElementById('duration').value;
+  if (duration < 0) {
+    alert("Time can't be zero or negative!");
+  } else {
+    createSlider();
+  }
 })
 
 const toggleSpinner = () => {
   const spinner = document.getElementById('loading-spinner');
   spinner.classList.toggle('d-none');
+  imagesArea.classList.toggle('d-none');
 }
