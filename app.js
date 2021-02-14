@@ -144,7 +144,7 @@ enterKey('duration', 'create-slider');
 sliderBtn.addEventListener('click', function () {
   const duration = document.getElementById('duration').value;
   if (duration < 0) {
-    alert("Time can't be zero or negative!");
+    alert("Time can't be negative!");
   } else {
     createSlider();
   }
