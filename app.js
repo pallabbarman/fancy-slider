@@ -15,6 +15,7 @@ const KEY = '15674931-a9d714b6e9d654524df198e00&q';
 
 // api call 
 const getImages = (query) => {
+  // toggleSpinner();
   fetch(`https://pixabay.com/api/?key=${KEY}=${query}&image_type=photo&pretty=true`)
     .then(response => response.json())
     .then(data => showImages(data.hits))
@@ -31,8 +32,9 @@ const showImages = (images) => {
     let div = document.createElement('div');
     div.className = 'col-lg-3 col-md-4 col-xs-6 img-item mb-2';
     div.innerHTML = ` <img class="img-fluid img-thumbnail" onclick=selectItem(event,"${image.webformatURL}") src="${image.webformatURL}" alt="${image.tags}">`;
-    gallery.appendChild(div)
-  })
+    gallery.appendChild(div);
+    toggleSpinner();
+  });
 
 }
 
@@ -40,13 +42,14 @@ const showImages = (images) => {
 let slideIndex = 0;
 const selectItem = (event, img) => {
   let element = event.target;
-  element.classList.add('added');
+  element.classList.toggle('added');
 
   let item = sliders.indexOf(img);
   if (item === -1) {
     sliders.push(img);
-  } else {
-    alert('Hey, Already added !')
+  }
+  else {
+    sliders.splice(item, 1);
   }
 }
 var timer
@@ -80,10 +83,19 @@ const createSlider = () => {
     sliderContainer.appendChild(item)
   })
   changeSlide(0)
-  timer = setInterval(function () {
-    slideIndex++;
-    changeSlide(slideIndex);
-  }, duration);
+  if (duration >= 1000) {
+    timer = setInterval(function () {
+      slideIndex++;
+      changeSlide(slideIndex);
+    }, duration);
+  }
+  else {
+    // alert("Time can't be negative!");
+    timer = setInterval(function () {
+      slideIndex++;
+      changeSlide(slideIndex);
+    }, 1000);
+  }
 }
 
 // change slider index 
@@ -122,10 +134,18 @@ searchBtn.addEventListener('click', function () {
 
 // enter key in search box 
 document.getElementById("search").addEventListener("keypress", function (event) {
-  if (event.key == 'Enter')
+  if (event.key == 'Enter') {
     document.getElementById("search-btn").click();
+  }
 });
 
 sliderBtn.addEventListener('click', function () {
   createSlider()
 })
+
+
+const toggleSpinner = () => {
+  const spinner = document.getElementById('loading-spinner');
+  console.log(spinner.classlist);
+  spinner.classList.toggle('d-none');
+}
