@@ -4,6 +4,7 @@ const galleryHeader = document.querySelector('.gallery-header');
 const searchBtn = document.getElementById('search-btn');
 const sliderBtn = document.getElementById('create-slider');
 const sliderContainer = document.getElementById('sliders');
+const sliderArea = document.querySelector('.main');
 // selected image 
 let sliders = [];
 
@@ -27,6 +28,7 @@ const showImages = (images) => {
   imagesArea.style.display = 'block';
   toggleSpinner();
   gallery.innerHTML = '';
+
   // show gallery title
   galleryHeader.style.display = 'flex';
   images.forEach(image => {
@@ -36,7 +38,6 @@ const showImages = (images) => {
     gallery.appendChild(div);
   });
 }
-
 
 let slideIndex = 0;
 const selectItem = (event, img) => {
@@ -51,6 +52,7 @@ const selectItem = (event, img) => {
     sliders.splice(item, 1);
   }
 }
+
 var timer
 const createSlider = () => {
   // check slider image length
@@ -58,6 +60,7 @@ const createSlider = () => {
     alert('Select at least 2 image.')
     return;
   }
+
   // crate slider previous next area
   sliderContainer.innerHTML = '';
   const prevNext = document.createElement('div');
@@ -66,9 +69,9 @@ const createSlider = () => {
   <span class="prev" onclick="changeItem(-1)"><i class="fas fa-chevron-left"></i></span>
   <span class="next" onclick="changeItem(1)"><i class="fas fa-chevron-right"></i></span>
   `;
-
   sliderContainer.appendChild(prevNext)
   document.querySelector('.main').style.display = 'block';
+
   // hide image aria
   imagesArea.style.display = 'none';
   const duration = document.getElementById('duration').value || 1000;
@@ -96,7 +99,6 @@ const changeItem = index => {
 
 // change slide item
 const changeSlide = (index) => {
-
   const items = document.querySelectorAll('.slider-item');
   if (index < 0) {
     slideIndex = items.length - 1;
@@ -126,6 +128,7 @@ searchBtn.addEventListener('click', function () {
     getImages(search);
     sliders.length = 0;
   }
+  document.getElementById('search').value = "";
 })
 
 // enter key for search box and slider images
@@ -147,8 +150,25 @@ sliderBtn.addEventListener('click', function () {
   }
 })
 
+// back to homepage 
+const backHome = () => {
+  sliderArea.style.display = 'none';
+  imagesArea.style.display = 'block';
+  clearInterval(timer);
+};
+
+// spinner added 
 const toggleSpinner = () => {
   const spinner = document.getElementById('loading-spinner');
   spinner.classList.toggle('d-none');
   imagesArea.classList.toggle('d-none');
 }
+
+/* for bonus part
+
+1. added spinner for data load
+2. added enter key for slider images
+3. added search item name in display
+4. added back button
+
+*/
